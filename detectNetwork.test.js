@@ -152,24 +152,40 @@ describe('Discover', function() {
     });
 });
 
+// describe('Maestro', function() {
+//   // Write full test coverage for the Maestro card
+//   for (var length = 8; length <= 15; length++) {
+//     (function(length) {
+//       it(`has a prefix of 5018 and a length of ${length + 4}`, function() {
+//         detectNetwork('5018' + '0'.repeat(length)).should.equal('Maestro');
+//       });
+//       it(`has a prefix of 5020 and a length of ${length + 4}`, function() {
+//         detectNetwork('5020' + '0'.repeat(length)).should.equal('Maestro');
+//       });
+//       it(`has a prefix of 5038 and a length of ${length + 4}`, function() {
+//         detectNetwork('5038' + '0'.repeat(length)).should.equal('Maestro');
+//       });
+//       it(`has a prefix of 6034 and a length of ${length + 4}`, function() {
+//         detectNetwork('6304' + '0'.repeat(length)).should.equal('Maestro');
+//       });
+//     })(length);
+//   };
+// });
+
 describe('Maestro', function() {
   // Write full test coverage for the Maestro card
-  for (var length = 8; length <= 15; length++) {
-    (function(length) {
-      it(`has a prefix of 5018 and a length of ${length + 4}`, function() {
-        detectNetwork('5018' + '0'.repeat(length)).should.equal('Maestro');
-      });
-      it(`has a prefix of 5020 and a length of ${length + 4}`, function() {
-        detectNetwork('5020' + '0'.repeat(length)).should.equal('Maestro');
-      });
-      it(`has a prefix of 5038 and a length of ${length + 4}`, function() {
-        detectNetwork('5038' + '0'.repeat(length)).should.equal('Maestro');
-      });
-      it(`has a prefix of 6034 and a length of ${length + 4}`, function() {
-        detectNetwork('6304' + '0'.repeat(length)).should.equal('Maestro');
-      });
-    })(length);
-  };
+  ['5018', '5020', '5038', '6304'].forEach(function(prefix) {
+    for (let len = 12; len <= 19; len++) {
+      let cardNum = prefix;
+      (function(len) {
+        for (let add = len - 4; add > 0; add--) {
+            cardNum += add.toString().charAt(0);
+        }
+        it(`has a prefix of ${prefix} and a length of ${len}`, function() {
+          detectNetwork(cardNum).should.equal('Maestro');
+        });
+      })(len);
+    }});
 });
 
 describe('should support China UnionPay', function() {
